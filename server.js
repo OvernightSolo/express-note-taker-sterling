@@ -4,9 +4,9 @@ const fs = require("fs");
 const util = require("util");
 
 // Helper method for generating unique ids
-const uuid = require("./Develop/helpers/uuid");
+const uuid = require("uuid");
 
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 
 const app = express();
 
@@ -16,19 +16,9 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(express.static("public"));
 
-// GET Route for homepage
-app.get("/", (req, res) =>
-  res.sendFile(path.join(__dirname, "./Develop/public/index.html"))
-);
-
 // GET Route for notes page
 app.get("/notes", (req, res) =>
   res.sendFile(path.join(__dirname, "./Develop/public/notes.html"))
-);
-
-// GET Route for wild card homepage
-app.get("*", (req, res) =>
-  res.sendFile(path.join(__dirname, "./Develop/public/index.html"))
 );
 
 // Promise version of fs.readFile
@@ -63,18 +53,27 @@ app.get("/api/notes", (req, res) => {
 app.post("/api/notes", (req, res) => {
   console.info(`${req.method} request received to add a note`);
 
+  const { title, text } = req.body;
+
   if (req.body) {
     const newNote = {
-      tip_id: uuid(),
+      title,
+      text,
+      id: uuid.v1(),
     };
 
     readAndAppend(newNote, "./db/db.json");
-    res.json(`Note added successfully 🚀`);
+    res.json(`Note added successfully`);
   } else {
-    res.error("Error in adding note");
+    res.error("Error adding note");
   }
 });
 
+// GET Route for wild card homepage
+app.get("*", (req, res) =>
+  res.sendFile(path.join(__dirname, "./Develop/public/index.html"))
+);
+
 app.listen(PORT, () =>
-  console.log(`App listening at http://localhost:${PORT} 🚀`)
+  console.log(`App listening at http://localhost:${PORT}`)
 );
