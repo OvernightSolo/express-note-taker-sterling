@@ -1,14 +1,5 @@
 [
     {
-        "title": "Test Title",
-        "text": "Test text"
-    },
-    {
-        "title": "Trash",
-        "text": "Take out the trash",
-        "id": "006e7340-2f24-11ed-be05-0d608b8656ef"
-    },
-    {
         "title": "Bills",
         "text": "Pay bills for the middle of the month",
         "id": "ab283320-2f24-11ed-903a-fb46821555cb"
@@ -22,10 +13,5 @@
         "title": "Lawn",
         "text": "Mow front yard and use the edger",
         "id": "739e6d60-2ffc-11ed-8866-6f205f4da628"
-    },
-    {
-        "title": "Delete button",
-        "text": "Figure out how to make delete button functional",
-        "id": "105ade70-2fff-11ed-8866-6f205f4da628"
     }
 ]

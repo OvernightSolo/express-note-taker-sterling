@@ -5,6 +5,7 @@ const util = require("util");
 
 // Helper method for generating unique ids
 const uuid = require("uuid");
+const { json } = require("express");
 
 const PORT = process.env.PORT || 3001;
 
@@ -41,6 +42,20 @@ const readAndAppend = (content, file) => {
   });
 };
 
+const deleteNote = (file, id) => {
+  fs.readFile(file, "utf-8", (err, data) => {
+    if (err) {
+      console.error(err);
+    } else {
+      let notesArr = [];
+      notesArr.push(data);
+      let parsedData = JSON.parse(notesArr);
+      notesArr = parsedData.filter((item) => item.id !== id);
+      writeToFile(file, notesArr);
+    }
+  });
+};
+
 // GET Route for retreiving all saved notes
 app.get("/api/notes", (req, res) => {
   console.info(`${req.method} request received for notes`);
@@ -65,6 +80,13 @@ app.post("/api/notes", (req, res) => {
   } else {
     res.error("Error adding note");
   }
+});
+
+// DELETE Route for deleting a note
+app.delete("/api/notes/:id", (req, res) => {
+  console.info(`${req.method} request received to delete a note`);
+  deleteNote("./db/db.json", req.params.id);
+  res.json("Note has been deleted!");
 });
 
 // GET Route for wild card homepage
